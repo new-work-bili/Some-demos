@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>3D筛子+动画</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{			
+			background: #1d1f20;
+		}
+		#wrap{
+			width: 200px;				
+			margin: 300px auto;
+			perspective: 1000px;	/* 在3D元素父级设置景深 */
+		}
+		.box{
+			width: 200px;
+			height: 200px;
+			/* transform: rotateZ(20deg) rotateX(20deg) rotateY(20deg); */
+			transform-style: preserve-3d;	/* 3D元素 */
+		}
+		.box>div{
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			padding: 20px;
+			display: flex;
+			background: #e7e7e7;
+			box-shadow: 0 0 10px #bbb;	/* 有种亮光效果 */
+			border-radius: 5%;
+			
+			position: absolute;
+			opacity: 0;
+		}
+		span{
+			display: block;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			background: #d82828;
+			box-shadow: inset 0 5px #b60505,inset 0 -5px #fa5d5d;	/* 用阴影实现凹进去的效果；上面的亮，下面的暗 */
+			
+		}
+		.one{
+			justify-content: center;
+			align-items:center;
+			/* transform:  translateZ(100px); */
+			animation: 0.25s one1 linear,0.2s one2 linear 1.75s;
+			animation-fill-mode:forwards;	/* 让动画停在最后一帧 */
+		}
+		.two{
+			justify-content: space-between;		
+			/* transform: rotateY(90deg) translateZ(100px); */
+			animation: 0.25s two1 linear 0.25s,0.2s two2 linear 1.75s;
+			animation-fill-mode:forwards;	/* 让动画停在最后一帧 */
+		}
+		.two span:nth-child(2){
+			align-self: flex-end;
+		}
+		.three{
+			justify-content: space-between;		/* 贴着两边 */
+			/* transform: translateZ(-100px); */
+			animation: 0.25s three1 linear 0.5s,0.2s three2 linear 1.75s;
+			animation-fill-mode:forwards;	/* 让动画停在最后一帧 */
+		}
+		.three span:nth-child(2){
+			align-self: center;
+		}
+		.three span:nth-child(3){
+			align-self: flex-end;
+		}
+		.four{
+			justify-content: space-between;	
+			/* transform: rotateY(90deg) translateZ(-100px); */
+			animation: 0.25s four1 linear 0.75s,0.2s four2 linear 1.75s;
+			animation-fill-mode:forwards;	/* 让动画停在最后一帧 */
+		}
+		.four>div{
+			display: flex;		/* 此时.four下的div既是容器也是项目元素 */
+			flex-wrap: wrap;	/* 强制换行，容器属性：控制下面的span */
+			flex:0;			/* 项目属性：控制自己；作用:从block设置成flex之后宽度变了，用这个属性把宽度变成原来的？？？？？？？？？*/
+			
+		}
+		.four div span:nth-child(2){
+			align-self: flex-end;	/* 让下面的span到最底下 */
+		}
+		.five{
+			/* transform: rotateX(90deg) translateZ(-100px); */
+			animation: 0.25s five1 linear 1s,0.2s five2 linear 1.75s;
+			animation-fill-mode:forwards;	/* 让动画停在最后一帧 */
+		}
+		.five>div{
+			display: flex;
+			flex-wrap: wrap;
+			flex: 0;
+		}
+		.five>div:nth-child(1) span:nth-child(2),.five>div:nth-child(3) span:nth-child(2){
+			align-self: flex-end;
+		}
+		.five>div:nth-child(2){
+			align-self: center;
+		}
+		.six{
+			justify-content: space-between;
+			/* transform: rotateX(90deg) translateZ(100px); */
+			animation: 0.25s six1 linear 1.25s,0.2s six2 linear 1.75s;
+			animation-fill-mode:forwards;	/* 让动画停在最后一帧 */
+		}
+		.six>div{
+			display: flex;
+			flex-wrap: wrap;
+			flex: 0;
+			align-content: space-between;
+			
+		}
+		
+		/* 最后的转动效果其实就是让.box旋转 */
+		@keyframes boxMove{
+			0%{transform: rotateX(0) rotateY(0) rotateZ(0);}
+			100%{transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);}			
+		}
+		
+		.box{
+			animation: 10s boxMove linear infinite 1.95s;
+		}
+		@keyframes one1{
+			0%{
+				transform: rotateY(90deg) translateZ(300px);
+				opacity: 0;
+			}
+			100%{
+				transform:  translateZ(300px);
+				opacity: 1;
+			}
+		}
+		@keyframes one2{
+			0%{
+				transform:  translateZ(300px);
+			}
+			100%{
+				transform:  translateZ(100px);
+			}
+		}
+		@keyframes two1{
+			0%{
+				transform: translateZ(-300px);
+				opacity: 0;
+			}
+			100%{
+				transform: rotateY(90deg) translateZ(300px);
+				opacity: 1;
+			}
+		}
+		@keyframes two2{
+			0%{
+				transform: rotateY(90deg) translateZ(300px);
+			}
+			100%{
+				transform: rotateY(90deg) translateZ(100px);
+			}
+		}
+
+		
+		/*  */
+		@keyframes three1{
+			0%{
+				transform: rotateY(90deg) translateZ(-300px);
+				opacity: 0;
+			}
+			100%{
+				transform: translateZ(-300px);
+				opacity: 1;
+			}
+		}
+		@keyframes three2{
+			0%{
+				transform: translateZ(-300px);
+			}
+			100%{
+				transform: translateZ(-100px);
+			}
+		}
+		
+		/*  */
+		@keyframes four1{
+			0%{
+				transform: translateZ(300px);
+				opacity: 0;
+			}
+			100%{
+				transform: rotateY(90deg) translateZ(-300px);
+				opacity: 1;
+			}
+		}
+		@keyframes four2{
+			0%{
+				transform: rotateY(90deg) translateZ(-300px);
+			}
+			100%{
+				transform: rotateY(90deg) translateZ(-100px);
+			}
+		}
+		
+		/*  */
+		@keyframes five1{
+			0%{
+				transform: translateZ(300px);
+				opacity: 0;
+			}
+			100%{
+				transform: rotateX(90deg) translateZ(300px);
+				opacity: 1;
+			}
+		}
+		@keyframes five2{
+			0%{
+				transform: rotateX(90deg) translateZ(300px);
+			}
+			100%{
+				transform: rotateX(90deg) translateZ(100px);
+			}
+		}
+		
+		/*  */
+		@keyframes six1{
+			0%{
+				transform: translateZ(-300px);
+				opacity: 0;
+			}
+			100%{
+				transform: rotateX(90deg) translateZ(-300px);
+				opacity: 1;
+			}
+		}
+		@keyframes six2{
+			0%{
+				transform: rotateX(90deg) translateZ(-300px);
+			}
+			100%{
+				transform: rotateX(90deg) translateZ(-100px);
+			}
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="wrap">	<!-- 写它的目的就是为了能在主体元素父级设置景深 -->
+			<div class="box">
+				<div class="one">
+					<span></span>
+				</div>
+				<div class="two">
+					<span></span>
+					<span></span>
+				</div>
+				<div class="three">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+				<div class="four">
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="five">
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+					<div>
+						<span></span>
+					</div>
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div class="six">
+					<div>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<div>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	<script type="text/javascript">
+		
+	</script>
+</body>
+</html>

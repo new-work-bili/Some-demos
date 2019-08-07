@@ -1,0 +1,1 @@
+[仿照原型](http://www.elong.com/?semid=ppzqbaidu)

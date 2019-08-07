@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>九宫格签到</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrapper{
+				border: 1px solid #CCCCCC;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				flex-wrap: wrap;
+				width: 400px;
+				height: 600px;
+				margin: 0 auto;
+			}
+			.item{
+				box-sizing: border-box;
+				border: 5px solid #333333;
+				border-radius: 50%;
+				width: 70px;
+				height: 70px;
+				margin: 25PX;
+			}
+			.main{
+				position: absolute;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				flex-wrap: wrap;
+				width: 400px;
+				height: 600px;
+				opacity: 0.5;
+				margin: 0 auto;
+			}
+			#canvas{
+				/* z-index: 99; */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<canvas id="canvas" width="400" height="600"></canvas>
+			<div class="main">
+				<div class="item" id="one" data-number="1"></div>
+				<div class="item" id="two" data-number="2"></div>
+				<div class="item" id="three" data-number="3"></div>
+				<div class="item" id="four" data-number="4"></div>
+				<div class="item" id="five" data-number="5"></div>
+				<div class="item" id="sixe" data-number="6"></div>
+				<div class="item" id="seven" data-number="7"></div>
+				<div class="item" id="eith" data-number="8"></div>
+				<div class="item" id="nith" data-number="9"></div>			
+			</div>
+			
+		</div>
+		
+		<script type="text/javascript">
+			var wrapper = document.getElementsByClassName('wrapper')[0];
+			var main = document.getElementsByClassName('main')[0];
+			var canvas = document.getElementById('canvas');
+			var ctx = canvas.getContext("2d"); //返回一个上下文对象
+			var R = 30;
+			var left;
+			var top;
+						
+			main.onmousedown = function(e){
+				var event = e || window.event;
+				var target = event.target;
+				e.preventDefault();			//移动端防止页面滚动,网页端可以禁止鼠标按下拖拽时的默认情况,这对该事件很有用
+				
+				
+				
+				if(target.id){
+					target.style.border = '5px solid #1aad19';
+					var itemId = document.getElementById(target.id);
+					var Dleft = itemId.offsetLeft+R;	//获取点击元素的圆心位置
+					var Dtop = itemId.offsetTop+R;
+					
+					
+					
+					var xyArr;//存储新的圆点,转折点;**********迷了好久
+					var oldxyArr = [{	//选中的圆点的坐标信息
+							id:target.id,
+							X:Dleft,
+							Y:Dtop
+						},];	
+					//选中圆点的索引
+					var oldxyArrindex = [target.getAttribute("data-number")]
+					
+					
+					//滑动
+					main.onmousemove = function(e){
+						var event = e || window.event;
+						var target = event.target;
+						var offsetLeft = main.offsetLeft;
+						
+						
+						if(target.id){
+							
+							target.style.border = '5px solid #1aad19';
+							var itemId = document.getElementById(target.id);
+							var left = itemId.offsetLeft+R;	//获取点击元素的圆心位置
+							var top = itemId.offsetTop+R;
+							
+							
+							//如果oldxyArrindex里没有该索引,那么加上该索引,
+							if(oldxyArrindex.indexOf(target.getAttribute("data-number"))<0){
+								oldxyArrindex.push(target.getAttribute("data-number"));
+								oldxyArr.push({id:target.id,X:left,Y:top})
+							}
+							//console.log('oldxyArr',oldxyArr);	
+							
+							//连接
+							if(oldxyArrindex.length > 1){
+								var lastArr = oldxyArr[oldxyArrindex.length-2];	//上一个圆点的坐标信息
+								var thisarr = oldxyArr[oldxyArrindex.length-1];
+								console.log('lastArr',lastArr.X, lastArr.Y);
+								console.log('thisarr',thisarr.X, thisarr.Y);
+								ctx.beginPath(); //开启一个新路径
+								ctx.moveTo(lastArr.X, oldxyArr.Y);		
+								ctx.lineTo(thisarr.X, thisarr.Y);
+								ctx.strokeStyle = "#1aad19"; //设置描边颜色
+								ctx.lineWidth = 8;
+								ctx.stroke();
+							}
+							
+							
+							
+							
+							//跟随
+							//ctx.clearRect(0,0,400,600);//清除所有图画
+							ctx.beginPath(); //开启一个新路径
+							ctx.moveTo(left, top);		
+							ctx.lineTo(e.pageX-offsetLeft,e.pageY);
+							ctx.strokeStyle = "#1aad19"; //设置描边颜色
+							ctx.lineWidth = 8;
+							ctx.stroke();	
+							
+							xyArr = [left,top];//把转折点传出去
+						}
+											
+						
+						
+						
+						ctx.clearRect(0,0,400,600);//清除所有图画
+						ctx.beginPath(); //开启一个新路径
+						//ctx.moveTo(left, top);  //这里的left和top一直都是undefind,迷了好久***
+						ctx.moveTo(xyArr[0], xyArr[1]);
+						ctx.lineTo(e.pageX-offsetLeft,e.pageY);
+						
+						
+						ctx.strokeStyle = "#1aad19"; //设置描边颜色
+						ctx.lineWidth = 8;
+						ctx.stroke();
+					}
+				
+				}
+				
+				
+				main.onmouseup = function(){
+					this.onmousemove = null;
+					this.onmouseup = null;
+					
+					
+				}
+			}
+			
+			/* //是否选中
+			function chice(){
+				var indexArr = [];
+				var dom = document.getElementsByClassName('item');
+				for(var i = 0;i < dom.length;i++){
+					if(dom[i].style.border = '5px solid #1aad19'){
+						indexArr.push(i);
+					}
+				}
+				return indexArr;
+			} */
+			
+		</script>
+	</body>
+</html>

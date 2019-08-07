@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>看看能不能改进至对大小写不敏感</title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			.main{
+				width: 350px;
+				border: 1px solid #CCCCCC;
+				padding: 25px;
+			}
+			#inputValue{
+				height: 25px;
+			}
+			.img{
+				background-image: url(images/false.png);
+				background-size: 100%;
+				height: 30px;
+				width: 30px;
+				float: right;
+				margin-right: 157px;
+				display: none;
+			}
+			.textTorF{
+				display: none;
+				color: red;
+			}
+			.refresh{
+				background: url(images/update.png) no-repeat;
+				background-size: 100%;
+				width: 20px;
+				height: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<div class="input">
+				<input type="text" name="" id="inputValue" value="" placeholder="请输入验证码"/>
+				<!-- 对错图片 -->
+				<div class="img"></div>
+				<!-- 对错提示 -->
+				<div class="textTorF"></div>
+			</div>
+			<!-- 验证码 -->
+			<div class="canvasBox">
+				<div class="imageBox">
+					<!-- 画布 -->
+					<canvas id="canvasCaptcha" width=300 height=80></canvas>
+				</div>
+				<!-- 刷新 -->
+				<div class="refresh"></div>
+				<button type="button" class="submit">提交</button>
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<script type="text/javascript">
+			//
+			var arr = [0,1,2,3,4,5,6,7,8,9];
+			for(var i=65;i<122;i++){	//只是为了循环出A~z
+				if(i>90 && i<97){
+					continue			//跳过,
+				}
+				arr.push(String.fromCharCode(i))	//把ASCII码转化成对应值
+			}
+			
+			var canvasStr,value;
+			
+			function createCanvas(){
+				canvasStr='';
+				value = '';
+				for(var i = 0; i < 6; i++){
+					var a = arr[Math.floor(Math.random() * arr.length)];	//随机选出arr里的某一个值
+					canvasStr += a + '';	//用于画布
+					value += a;				//用于验证
+					/* console.log('canvasStr:',canvasStr);
+					console.log('value:',value); */
+				}
+				
+				//新建画布
+				//不知道为什么这里用jq获取就会报错
+				/* var canvas = $('#canvasCaptcha'); */
+				var canvas = document.getElementById('canvasCaptcha');
+				var ctx = canvas.getContext('2d');	//设置画布上绘图的环境
+				var x = canvas.width/2;
+				var oImg = new Image();
+				oImg.src = 'images/bg.jpg'			//创建背景
+				
+				oImg.onload = function(){
+					//在水平和垂直方向重复图像
+					var pattern = ctx.createPattern(oImg,'repeat');	
+					//设置或返回用于填充绘画的颜色、渐变或模式;pattern:用于填充绘图的 pattern 对象
+					ctx.fillStyle = pattern;	
+					//方法绘制“已填色”的矩形。默认的填充颜色是黑色;(距离画布x轴边缘距离,y,宽,高)
+					ctx.fillRect(0,0,canvas.width,canvas.height);	
+					//设置或返回文本内容的当前对齐方式
+					ctx.textAlign = 'center';
+					ctx.fillStyle = '#ccc';
+					//设置或返回文本内容的当前字体属性
+					ctx.font = '46px Roboto Slab';
+					//将当前转换重置为单位矩阵。然后运行 transform()
+					ctx.setTransform (1, -0.12, 0.2, 1, 0, 12);
+					//在画布上绘制“被填充的”文本
+					ctx.fillText(canvasStr, x, 60);
+				}
+			}
+			createCanvas();
+			
+			//验证验证码
+			function showCheck(){
+				var inputValue = $('#inputValue').val();
+				console.log('inputValue:',inputValue)
+				console.log('inputValue.toLowerCase():',inputValue.toLowerCase())
+				console.log('value:',value)
+				console.log(inputValue == value)
+				//不区分大小写处理:都化成小写
+				if(inputValue.toLowerCase() == value.toLowerCase()){
+					//注意jq设置css的格式
+					$('.img').css({display: 'block',backgroundImage:'url(images/true.png)'})
+					console.log('正确')
+				}else{
+					if(inputValue == null || inputValue == '' || inputValue == undefined){
+						$('.textTorF').text('请输入验证码').css({display: 'block'});
+						$('.img').css({display: 'block',backgroundImage:'url(images/false.png)'});
+						console.log('无')
+					}else{
+						$('.img').css({display: 'block',backgroundImage:'url(images/false.png)'})
+						//jq的链式方法
+						$('.textTorF').text('验证码错误').css({display: 'block'})
+						createCanvas();
+						console.log('错误')
+					}
+				}
+			}
+			
+			$('.refresh').click(createCanvas);
+			$('.submit').click(showCheck)
+			$('#inputValue').focus(function(){
+				$('.textTorF').fadeOut();
+				$('.img').fadeOut();
+				/* //也可以这样写
+				$('.errorText').add($('.captchaIcon')).fadeOut(100); */
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>百度联想词</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			.wrapper {
+				/* position: absolute;
+				left: 0;
+				right:0;
+				top: 0;
+				bottom: 0;
+				margin: auto; */
+				margin: 0 auto;
+				margin-top: 150px;
+				width: 450px;
+			}
+
+			#word {
+				width: 450px;
+				height: 35px;
+			}
+
+			#list {
+				display: none;
+				width: 450px;
+				border: 1px solid #ccc;
+			}
+
+			li {
+				list-style: none;
+				padding: 5px;
+			}
+
+			a {
+				text-decoration: none;
+				color: #333;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<input type="text" name="" id="word" value="" placeholder="输入文字" />
+			<ul id="list"></ul>
+		</div>
+
+
+		<script type="text/javascript">
+			var word = document.getElementById('word')
+			var list = document.getElementById('list')
+			var listData = document.getElementsByClassName('listData')
+
+			word.oninput = function() {	//oninput:当用户向 <input> 中尝试输入时执行 JavaScript：
+				var value = this.value;
+				//console.log(value);
+				if (value) {
+					var oScript = document.createElement('script');
+					//设置jsonp,此网址是百度提供的一个API,wd=关键字	cb=回调函数,
+					oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + value + '&cb=callBack';
+					document.body.appendChild(oScript);
+					document.body.removeChild(oScript);
+					/* oScript.remove(); */
+					//console.log(oScript)
+				}
+				list.style.display = 'none' //要有''
+			}
+
+			
+			//json回调函数;
+			function callBack(data) {
+				console.log(data); //打印jsonp回调函数返回的数据
+				list.style.display = 'block';//要有''
+				var listData = data.s;
+				var str = '';
+				if (listData.length > 0) {
+					listData.forEach(function(ele, index) {
+						//此网址是跳转搜索
+						str += '<li><a href ="https://www.baidu.com/s?wd=' + ele + '">' + ele + '</li>';
+						console.log(str)
+					})
+					list.innerHTML = str;
+				} else {
+					list.style.display = 'none';
+				}
+			
+			}
+			
+			//json回调函数;为什么这样写错 了？
+			  /* function callBack(data) {
+				
+				var listData = data.s
+			
+				if (listData.length == 0) {
+					list.style.display = 'none';
+				} else {
+					listData.forEach((item, index) => {
+						//console.log(word.value)
+						var li = document.createElement('li')
+						var a = document.createElement('a')
+						//此网址是跳转搜索
+						li.className = 'listData';
+						a.href = 'https://www.baidu.com/s?wd=' + item;
+						a.innerText = item;
+						li.appendChild(a);
+						list.appendChild(li);
+						list.style.display = 'block' ;//要有''
+					})
+				}
+			} */
+		</script>
+	</body>
+</html>

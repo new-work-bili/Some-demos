@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>最原始的懒加载</title>
+		
+		<style type="text/css">
+			/* 要提前设置好div的宽高,也就是站好位置;不然刚开始没有src的时候图片的宽高都为0，这样会被认为都在视窗内，所以都会被加载出来 */
+			.img_item{
+				width: 40%;
+				height: 450px;
+				margin-left: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img1.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img2.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img3.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img4.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img5.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img6.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img7.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img8.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img9.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-src="http://axuebin.com/lazyload/img/img10.png" alt="loading" >
+			</div>
+		</div>
+		
+		<script type="text/javascript">	
+			//没有 判断元素是否在的视窗(视野)内 的函数,直接写在checkImgs()获取,遍历图片里
+
+			//获取,遍历图片
+			function checkImgs(){
+				/* const imgs = document.querySelectorAll('.img')	//用querySelectorAll获取图片 */				
+				const imgs = document.getElementsByClassName('img')	//用getElementsByClassName获取图片
+				
+				//取浏览器窗口顶部与文档顶部之间的距离，也就是滚动条滚动的距离
+				var GunDong = document.documentElement.scrollTop;
+				//获取视窗的高度
+				const clientHeight = window.innerHeight;
+				
+				for(var i = 0;i<10;i++){
+					//元素到父级顶部的距离
+					var eTop = imgs[i].offsetTop;
+					if(GunDong + clientHeight > eTop){
+						/* console.log(imgs[i].offsetTop,i) */
+						loadImg(imgs[i])
+					}	
+				}				
+			}
+			
+			//把data-src的值赋给src
+			function loadImg(element){
+				if(!element.src){	//如果没有sec属性
+					const source = element.dataset.src	//把data-src的值赋给src
+					element.src = source
+					element.removeAttribute('data-src')	//去掉data-src,这个就遍历不到它,节省性能
+				}
+			}
+			
+			//这个还不能删,如果删了那么不滚动的话图片就不加载
+			checkImgs();
+			//监听滚动事件
+			/* document.addEventListener('scroll',checkImgs) */
+			
+
+			// 函数节流
+				var flag = false;	//标记是否正在执行中
+				window.onscroll = function() {
+					if (flag) {
+						//如果正在执行中，则直接return不往下执行了
+						return;
+					}
+					flag = true;	//此代码直到计时器及时完成之前都生效
+					setTimeout(function() {
+						console.log("函数节流");
+						checkImgs();
+						flag = false;
+				 }, 300);		//当此代码生效时就证明计时器计时完成，即已经执行完了
+		   };			
+			
+			
+			
+			
+			//测试
+			var imgs = document.querySelectorAll('.img')
+			var API_from = Array.from(imgs)
+			console.log('document.querySelectorAll(.img): ',imgs)
+			console.log('Array.from()之后:',API_from)
+			
+			var imgs = document.getElementsByClassName('img')
+			var API_from = Array.from(imgs)
+			console.log('document.getElementsByClassName(img):',imgs)
+			console.log('Array.from()之后:',API_from)
+		</script>
+	</body>
+</html>

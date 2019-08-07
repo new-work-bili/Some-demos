@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>弹幕</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrapper{
+				margin: 0 auto;
+				width: 800px;
+				overflow: hidden;
+				
+			}
+			.main{
+				position: relative;
+				width: 800px;
+				height: 600px;
+				border: 1px solid #CCCCCC;
+				margin-top: 10px;
+			}
+			a{
+				text-decoration: none;
+				color: #333;
+				font-weight: bolder;
+				z-index: 99;
+			}
+			span{
+				/* 强制不换行 */
+				white-space: nowrap;
+				position: absolute;
+				height: 21px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="main"></div>
+			<div class="input">
+				<input type="text" name="" id="content" placeholder="发一个友善的弹幕把(｀・ω・´)" />
+				<input type="button" name="" id="btn" value="发送" />
+			</div>
+		</div>
+		
+		
+		
+		<script type="text/javascript">
+			var main = document.getElementsByClassName('main')[0];
+			var content = document.getElementById('content');
+			var btn = document.getElementById('btn');
+			
+			//点击文本框清空文本框内容
+			content.onclick = function(){
+				if(content.value !== ''){
+					content.value = ''
+				}
+			}
+			
+			function clickSend(){
+				if(content.value == ''){
+					alert('请输入弹幕')
+				}else{
+					console.log(content.value.length)
+					var contentText = content.value;
+					//弹幕高度
+					var DanMuH = 21;
+					
+					//实现:各个弹幕不同高度,防止覆盖
+					var DanMuNumber = main.children.length;	//当前有多少弹幕
+					/* console.log('DanMuNumber:',DanMuNumber) */
+					//设置弹幕高度:
+					if(DanMuNumber < 1){
+						var DanMuHeight = 0;					
+					}else{
+						var DanMuHeight = 21 * DanMuNumber;
+					}
+					
+					
+					//创建弹幕
+					var DanMu = document.createElement('span');
+					var DanMua = document.createElement('a');
+					
+					DanMu.style.height = DanMuH + 'px'
+					DanMua.href ="https://www.baidu.com/s?wd=" + contentText;	//直接href,不用style.href
+					DanMua.target = '_blank';
+					DanMua.innerText = contentText;
+					//各个弹幕不同高
+					if(DanMuHeight < 300){
+						DanMu.style.marginTop = DanMuHeight +'px'
+					}else{
+						//当marginTop大于main高度的一半时,就让他的marginTop一直是300,也就是main高度的一半时
+						DanMu.style.marginTop ='300px'
+					}
+					
+					//插入				
+					DanMu.appendChild(DanMua)
+					main.appendChild(DanMu)
+					
+					
+					
+					//运动
+					var moveX = 800;
+					//字越多,移动越快
+					var spend = Math.ceil(content.value.length/3) 
+					var timer = setInterval(function(){		
+						//实现运动
+						DanMu.style.marginLeft = moveX + 'px';	
+						if(moveX > -DanMu.offsetWidth){
+							moveX -= spend;					
+							//看看此时有多少弹幕
+							/* console.log('DanMuNumber:',DanMuNumber) */
+						}else{
+							//清除定时器
+							clearInterval(timer);
+							//删除本身节点:parentNode找到DanMu的父级,然后从DanMu的父级那删除其子级,也就是弹幕本身
+							DanMu.parentNode.removeChild(DanMu);
+						}
+					},5)
+				}
+				
+			}
+			
+			
+			
+			btn.onclick = clickSend;	//不是clickSend()
+			//回车触发发送
+			document.onkeydown = function(e){
+				var event = e || window.event;//兼容IE
+				if(event.keyCode == 13){
+					clickSend();
+				}
+			}
+		</script>
+	</body>
+</html>

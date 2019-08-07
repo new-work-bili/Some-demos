@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原生别踩白快</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrapper{
+				position: relative;
+				top: 180px;
+				width: 400px;
+				height:600px;
+				margin: 0 auto;
+				border: 1px solid #333333;
+				overflow: hidden;
+			}
+			.main{
+				width: 400px;
+				height:600px;
+				position: relative;
+				background-color: #CCCCCC;
+			}
+			.go{
+				text-align: center;
+				height: 50px;
+				line-height: 50px;
+				background-color: #CCCCCC;
+			}
+			.row{
+				background: white;
+			}
+			.row div{
+			    width:100px;
+				height:150px;
+				box-sizing: border-box;
+				float: left;
+				border-left: solid 1px #333333;
+				border-bottom: solid 1px #333333;
+			}
+			a{
+				color: #333;
+				text-decoration: none;
+				font-size: 20px;
+				font-weight: bolder;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="go">
+				<a href="#">点击开始</a>
+			</div>
+			<div class="main"></div>
+		</div>
+		
+		
+		<!-- jq -->
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<script src="jq.js"></script>
+		<!-- 原生js -->
+		<!-- <script src="index.js"></script> -->
+	</body>
+</html>

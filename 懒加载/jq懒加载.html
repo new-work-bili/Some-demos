@@ -1,0 +1,61 @@
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<title>jq懒加载</title>
+		
+		<style type="text/css">
+			/* 要提前设置好div的宽高,也就是站好位置;不然刚开始没有src的时候图片的宽高都为0，这样会被认为都在视窗内，所以都会被加载出来 */
+			.img_item{
+				width: 40%;
+				height: 450px;
+				margin-left: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img1.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img2.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img3.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img4.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img5.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img6.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img7.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img8.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img9.png" alt="loading" >
+			</div>
+			<div class="img_item">
+				<img class="img" data-original="http://axuebin.com/lazyload/img/img10.png" alt="loading" >
+			</div>
+		</div>
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<script src="https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.js"></script>
+		<script type="text/javascript">
+				
+			 $("img.img").lazyload();
+		</script>
+	</body>
+	</html>
+
+
+
+

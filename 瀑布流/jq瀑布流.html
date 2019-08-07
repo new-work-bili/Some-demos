@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+
+		<title>medo</title>
+		<style type="text/css">
+			.waterfall {
+				max-width: 600px;
+				
+				margin: 0 auto;
+				position: relative;
+			}
+
+			.waterfall img {
+				width: 100px;
+				margin: 5px;
+				position: absolute;
+				transition: all .4s;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="waterfall">
+			<img class="img" src="http://axuebin.com/lazyload/img/img1.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img2.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img3.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img4.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img5.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img6.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img7.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img8.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img9.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img10.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img1.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img2.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img3.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img4.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img5.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img6.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img7.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img8.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img9.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img10.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img1.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img2.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img3.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img4.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img5.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img6.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img7.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img8.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img9.png" alt="loading">
+			<img class="img" src="http://axuebin.com/lazyload/img/img10.png" alt="loading">
+		</div>
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<script type="text/javascript">
+			//获取图片宽度,用于计算列数
+			var imgWidth = $('.waterfall img').outerWidth(true);
+			// 列数
+			var colCount = Math.floor(($('.waterfall').width() / imgWidth))	//outerWidth(true) 包括margin	
+			
+			var colHeightArray = [] //用来记录每一列的高度的数组
+			//初始化每列的高度为0;	如果有4列，那么数组的值为[0,0,0,0]
+			for (var i = 0; i < colCount; i++) {
+				colHeightArray[i] = 0 
+			}
+					
+			//当有图片加载完成时我们在对其进行排序:
+			//当前图片排版后都会排在 当前最短列 的后面	;第一行特殊,用的都是初始值
+			$('.waterfall img').on('load', function() {
+				//minValue是用于记录当前最短列的高度
+				var minValue = colHeightArray[0] //初始值colHeightArray[0]为0,不过每次到第83行就会把最短列的高度传给minValue
+				//当前最短列的索引
+				var minIndex = 0 //初始化数组索引为第一列------------这两个不能放到onload外面,不然会每次都初始话的
+				
+				for (var i = 0; i < colCount; i++) {				
+					//每轮比较都会存在第i列使得colHeightArray[i] < minValue成立,
+					//因为此时的colHeightArray[i]都是上一行第i列的高度,或者是初始值0
+					if (colHeightArray[i] < minValue) {
+						//如果小于，说明i列是最短列,要把该图片排到i列的后面
+						minValue = colHeightArray[i];	//把minValue的值设成最短列的高度,用于设置该图片的高度
+						minIndex = i;					//把当前最短列的索引设成i
+					}				
+				}
+				/* console.log('minValue:',minValue) */
+
+
+				// 对图片进行排版:当前图片排版后都会排在 当前最短列 的后面
+				$(this).css({
+					left: minIndex * imgWidth,	//最短列的索引*图片的宽度
+					top: minValue 				//最短列的高度
+				})
+				//第一轮/行 执行到这里时:colHeightArray = [0,0,0,0] ; minValue=0
+				// 累加该列/第minIndex列/当前最短列
+				colHeightArray[minIndex] += $(this).outerHeight(true) //数组中最小值等于当前最小值图片的高度  
+				
+				console.log('colHeightArray:',colHeightArray) //可以清楚的看到数组的变化，if判断不断数组中的最小值
+			})
+
+		</script>
+	</body>
+</html>

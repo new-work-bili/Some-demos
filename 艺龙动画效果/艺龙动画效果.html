@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>艺龙动画效果</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrapper{
+				width: 1200px;
+				height: 260px;
+				margin: 40px auto 0;
+				
+			}
+			.wrapper div{
+				float: left;
+				width: 133px;
+				height: 260px;
+				transition:width 1s; 
+			}
+			
+			#item_a{
+				background: red;
+			}
+/* 			.item_b,.item_c,.item_d,.item_e,.item_f,.item_g{
+				width: 133px;
+				height: 260px;
+			} */
+			#item_b{
+				background: #bbb;
+			}
+			#item_c{
+				background: #ccc;
+			}
+			#item_d{
+				background: #ddd;
+			}
+			#item_e{
+				background: #eee;
+			}
+			#item_g{
+				background: #9b9b9b;
+			}
+			.wrapper .active{
+				width: 402px;
+				transition:width 1s; 
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div id="item_a" class="active item">园林酒店</div>
+			<div id="item_b" class="item">园林酒店</div>
+			<div id="item_c" class="item">园林酒店</div>
+			<div id="item_d" class="item">园林酒店</div>
+			<div id="item_e" class="item">园林酒店</div>
+			<div id="item_f" class="item">园林酒店</div>
+			<div id="item_g" class="item">园林酒店</div>
+		</div>
+		
+		<script type="text/javascript">
+			var item = document.getElementsByClassName('item');
+			
+			document.onmousemove = function(e){
+				var active = document.getElementsByClassName('active')[0];				
+				var event = e || window.event;
+				var target = event.target;
+				
+				if(target.id && target.className!='active'){
+					active.classList.remove('active');
+					target.classList.add('active');
+				}
+			}				
+		</script>
+	</body>
+</html>
