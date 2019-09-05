@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>验证滑块</title>
+	</head>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.wrapper {
+			margin: 10px auto 0;
+			width: 234px;
+		}
+
+		.main {
+			background: #f2ece1;
+			border-radius: 16px;
+			border: 1px solid #ddd;
+			padding: 16px 16px 7px;
+			/* overflow: hidden; */
+		}
+
+		.reload {
+			width: 28px;
+			height: 28px;
+		}
+
+		.reload img {
+			width: 100%;
+		}
+
+		.hua {
+			width: 234px;
+			height: 50px;
+			margin-top: 20px;
+			box-sizing: border-box;
+			background: #f2ece1;
+			border-radius: 24px;
+			border: 1px solid #ddd;
+			padding: 20px 40px;
+			position: relative;
+			background: #f2ece1;
+		}
+
+		.long {
+			width: 165px;
+			height: 10px;
+			background: #f27171;
+			border-radius: 5px;
+			
+		}
+
+		.ball {
+			position: absolute;
+			left: 0;
+			width: 30px;
+			height: 30px;
+			background-color: #827878;
+			border-radius: 50%;
+			transform: translate(20px, -10px);
+			box-shadow: 0px 0px 6px 0px #73706e;
+		}
+		.image{
+			position: relative;
+		}
+		#canHole{
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		#canMask{
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.mask{
+			width: 200px;
+			height: 100px;
+			position: absolute;
+			top: 0;
+			left: -200px;
+		}
+	</style>
+	<body>
+		<div class="wrapper">
+			<div class="main">
+				<div class="image">
+					<img src="./img/t1.png">
+					<canvas class="can" id="canHole" width="200" height="100"></canvas>
+					<!-- 遮住拼图 -->
+					<div class="mask">
+						<canvas class="can" id="canMask" width="200" height="100"></canvas>
+					</div>
+				</div>
+				<div class="reload">
+					<img src="./img/reload.png">
+				</div>
+			</div>
+			<!-- 滑动 -->
+			<div class="hua">
+				<div class="long">
+					<div class="ball"></div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var canHole = document.querySelector('#canHole');
+			var canMask = document.querySelector('#canMask');
+			var ball = document.querySelector('.ball');
+			var img = document.querySelector('.image img');
+			var mask = document.querySelector('.mask');
+			var reload = document.querySelector('.reload');
+			var R = 6; //拼图疙瘩的半径
+			var pW = 35; //拼图的宽高
+			
+			var ctxHole = canHole.getContext("2d");
+			var ctxMask = canMask.getContext("2d");
+			
+			
+			//把角度换弧度
+			function getRadian(degree) {
+				return degree * Math.PI / 180
+			}
+			//区间内随机数
+			function getRandom(min, max) {
+			    return Math.floor(Math.random() * (max - min)) + min;
+			}
+			
+			//用路径描出拼图的形状
+			function drawPath(ctx, x, y) {
+				ctx.beginPath();
+				ctx.moveTo(x, y);
+				//画第一段
+				ctx.lineTo(x + pW / 2 - R, y);
+				//第二段:拼图凸出来的疙瘩;圆心x,圆心y,半径,弧度:从180画到0度
+				ctx.arc(x + pW / 2, y, R, getRadian(180), 0);
+				//3
+				ctx.lineTo(x + pW, y);
+				//4：往下
+				ctx.lineTo(x + pW, y + pW/2-R);
+				//5:凹进去的疙瘩
+				ctx.arc(x + pW, y + pW/2, R, getRadian(-90), getRadian(90),true);	//true:逆时针
+				//6
+				ctx.lineTo(x + pW, y + pW);
+				//7:往左
+				ctx.lineTo(x, y + pW);
+				//8:往上
+				ctx.lineTo(x, y);
+			}
+			
+			//保存x的值,以便外部能访问
+			var new_x;
+			//随机拼图位置,要靠中间一点
+			var x = getRandom(canHole.clientWidth/3,canHole.clientWidth*4/5);
+			var y = getRandom(10,canHole.clientHeight*2/3);
+			//设置画布的其他参数,并开始作画
+			function draw(){
+				//随机图片
+				var index = getRandom(1,4);
+				img.src = `./img/t${index}.png`;
+				
+				//拼图缺口:
+				drawPath(ctxHole, x, y);	//调用路径，描出拼图形状
+				ctxHole.fillStyle = '#333';	//填充颜色
+				ctxHole.fill();				//填充
+				
+				
+				//要盖住缺口的拼图:
+				drawPath(ctxMask,x,y)			//调用路径，描出拼图形状
+				ctxMask.strokeStyle = "transparent";	//画布整体透明
+				ctxMask.lineWidth = 0;	//设置或返回当前的线条宽度
+				//设置阴影
+				ctxMask.shadowBlur = 10;
+				ctxMask.shadowColor = "#000";
+				ctxMask.fillStyle = "#000";
+				ctxMask.fill();			
+				ctxMask.stroke();	//绘制
+				imgLoaded(function () {	//等图片加载好之后再使用图片
+				    ctxMask.drawImage(img, 0, 0, img.width, img.height);//向画布上绘制图像、画布或视频
+				})
+				ctxMask.clip();	//从原始画布剪切任意形状和尺寸的区域
+				
+				//经计算,要盖住缺口的拼图的left的值是： 拼图距离画布最左侧的值x的相反数
+				mask.style.left = -x + 'px';
+				console.log(x,'mask.style.left:',mask.style.left);
+				new_x = x;	//保存x的值,以便后面判断位置是否正确
+			}
+			
+
+			function imgLoaded(callback) {	
+			    if (img.complete) {		//如果图片加载完成，则执行回调函数
+			        callback();
+			    }
+			    else {			
+			        img.onload = callback;	//如果图片没有加载完成，则等加载完成时执行回调函数
+			    }
+			}
+			
+			
+			draw();
+			reload.onclick = function(){
+				// x = getRandom(canHole.clientWidth/3,canHole.clientWidth*4/5)
+				draw();
+			}
+			
+			//滑动滑块
+			ball.onmousedown = function(e){
+				var e = window.event;
+				var Down_x = e.pageX - ball.offsetLeft;
+				document.onmousemove = function(e){
+					var e = window.event;
+					var Move_x = e.pageX;
+					var Dx = Move_x - Down_x;
+					ball.style.left = Dx + 'px';
+					
+					ball.style.left = Dx<0?0:Dx;
+					ball.style.left = Dx>153?'160px':Dx;
+					
+					
+					//让遮罩拼图跟随小球运动
+					canMask.style.left = ball.style.left;						
+				}
+				window.onmouseup = function(){		//不能用document.onmouseup,
+					document.onmousemove = null;
+					window.onmouseup = null;
+					location.reload();
+					//误差为5
+					if(new_x-5<canMask.offsetLeft && canMask.offsetLeft<new_x+5){
+						alert('成功')
+					}else{
+						alert('失败')
+					}
+					
+						
+				}
+			}
+			
+			
+			
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>打字游戏</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrapper{
+				position: absolute;
+				width: 100%;
+				top: 0;
+				bottom: 0;
+				background: url(img/bg.jpg) no-repeat center;
+				background-size: 100%;
+				overflow: hidden;
+			}
+			.number{
+				float: right;
+				width: 30%;
+				height: 100%;
+			}
+			.abc{
+				height: 100%;
+				width: 70%;
+			}
+			h2{
+				margin-top: 318px;
+			}
+			h3{
+				margin-top: 10px;
+			}
+			h2,h3{
+				margin-left: 187px;
+			}
+			.over{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0,0,0,.5);
+				display: none;
+			}
+			.over p{
+				width: 300px;
+				height: 60px;
+				line-height: 60px;
+				text-align: center;
+				font-size: 3em;
+				color: #fff;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;		/* 居中 */
+				cursor:pointer;		/* 手型 */
+			}
+			.board{
+				width: 300px;
+				height: 360px;
+				font-size: 1.3em;
+				font-weight: bold;
+				background: url(img/board.png) no-repeat center;
+				background-size: 100%;
+				margin-top: 130px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction:  column;
+			}
+			
+			.letters{
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				top: -100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="number">
+				<div class="board">
+					
+				</div>
+			</div>
+			<div class="abc">				
+			</div>
+			<div class="over">
+				<p>游戏结束</p>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			var abcWrapper = document.querySelector('.abc');
+			var number = document.querySelector('.number');
+			var wrapper = document.querySelector('.wrapper');
+			var p = document.querySelector('p');
+			var over = document.querySelector('.over');
+			var board = document.querySelector('.board');
+			var score = 0;	//总分
+			var letterArr = [];	//用来装产生的字母对象
+			var lift = 10;	//几条命
+			var createLetter;	//定时器
+			
+			
+			/*记： 取min到max之间的随机数 */
+			function getRandom(min, max) {
+			    return Math.floor(Math.random() * (max - min) + min);
+			}
+			
+			/* 随机出一个字母 */
+			function getRandomLetter(){
+				var letterCode = getRandom(65, 91);
+				return String.fromCharCode(letterCode);
+			}
+			
+			/* 构造函数，设置每个字母的参数 */
+			function Letter(){
+				this.speed = 3 + score/80;	// 1秒钟移动的像素值，得分越高，速度越快
+				this.img = document.createElement('img');
+				this.randomLetter = getRandomLetter();
+				this.img.src = `img/letter/${this.randomLetter}.png`;				
+				this.img.className = "letters";
+				this.top = -100;	//用于比较高度
+				abcWrapper.appendChild(this.img);
+				this.moveSelf();	
+				//console.log('字母对象中的this：',this)
+			}
+			
+			/* 在构造函数的原型上定义函数，到时候再在构造函数里使用 */
+			Letter.prototype.moveSelf = function(){
+				var letterLeft = getRandom(0,970);
+				this.img.style.left = letterLeft + 'px';
+				var letterTop = -100; 	//起始高度
+				//定时器里的this指向window,所以这里要保存this
+				var that = this;
+				var moveInterval = setInterval(function(){
+					letterTop += that.speed; 
+					that.img.style.top = letterTop +'px';
+					that.top += that.speed;
+					if(!lift){	//lift为0时,游戏结束,所有运动停止
+						clearInterval(moveInterval)
+					}
+				},20)
+				
+			}
+			
+			//删除
+			Letter.prototype.killSelf = function(){
+				this.img.remove(); //从dom中移除该元素
+				//同时还要清除letterArr里的对应的对象,要不然会在键盘判断哪里出问题
+				var index = letterArr.indexOf(this);	//确定要删除对象的索引
+				letterArr.splice(index,1);				//删除第index位
+				setBoard();			//刷新分数
+			}
+			
+			//生成字母
+			function move(){
+					clearInterval(createLetter);
+					createLetter = setInterval(function(){
+						letterArr.push(new Letter());	
+						//console.log(letterArr)
+					},600)
+			}
+			
+			//检查是否超出屏幕,判断1
+			function check(){	
+				//循环遍历是一瞬间完成的，但每500毫秒letterArr都会添加一个新字母对象,所以这里也要没500毫秒进行一次遍历判断
+				setInterval(function(){
+					//循环遍历
+					for(var i = 0;i < letterArr.length;i++){
+						var dir = letterArr[i];
+						var dirTop = dir.top;				
+						if(dirTop > abcWrapper.clientHeight){	
+							dir.killSelf();
+							lift--;
+							console.log(lift);
+							if(lift == 0){
+								gameOver();
+							}
+						}
+					}
+				},500)
+			}
+			
+			//数据面板
+			function setBoard() {
+				board.innerHTML = `
+					<p>得分: ${score} </p>
+					<p>剩余生命: ${lift} </p>
+				`;
+			}
+			
+			//游戏结束
+			function gameOver(){
+				clearInterval(createLetter);
+				window.onkeypress = null;
+				over.style.display = 'block';
+			}
+			
+			setBoard();
+			move();
+			check();
+			
+			
+			
+			//绑定键盘事件,判断2
+			window.onkeypress = function(e){
+				var pressLetter = e.key.toUpperCase();//得到按键字符串的大写格式
+				for (var i=0;i < letterArr.length ;i++) {
+					//console.log(letterArr)
+					var die = letterArr[i];
+					if (die.randomLetter === pressLetter) {
+						die.killSelf();
+						score += 10;//加10分
+						setBoard();	//刷新分数
+						break;		//结束循环,还能解决诸如"有10个A,按一下A结果10个A都消失了"的情况
+					}
+				}
+				
+			}
+			
+			//点击游戏结束刷新页面,重新开始
+			p.onclick = function(){
+				window.location.reload();	//刷新页面
+				over.style.display = 'none';
+			}
+
+		</script>
+	</body>
+</html>

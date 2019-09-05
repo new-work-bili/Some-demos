@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html><!-- 源码的代码太....冗余了 -->
+	<head>
+		<meta charset="utf-8">
+		<title>jq网游角色介绍</title>
+		<style type="text/css">
+			body {
+				/* background-color: #222222; */
+			}
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.container{
+				/* width: 100%; */
+				position: absolute;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				margin: auto;
+				/* height: 980px; */
+				background:url(img/bg.jpg);
+				background-size: 100%;
+			}
+			.box{
+				height: 100%;
+			}
+			.p{
+				position: absolute;
+				left: 100px;
+				top: 0;
+				height: 100%;
+				width: 70%;
+				font-size: 0;
+				transition: all 3s ease;
+			}
+			.box img{
+				height: 100%;
+				display: block;
+				float: right;
+				/* width: 100%; */
+			}
+			.nav{
+				height: 480px;
+				width: 120px;
+				position: absolute;
+				right: 100px;
+				top: 100px;
+				z-index: 1;		/*  */
+			}
+			.nav li{
+				width: 120px;
+				height: 120px;
+			}
+			.t1{
+				background: url(./img/t1.png) no-repeat center;
+			}
+			.t2{
+				background: url(./img/t2.png) no-repeat center;
+			}
+			.t3{
+				background: url(./img/t3.png) no-repeat center;
+			}
+			.t4{
+				background: url(./img/t4.png) no-repeat center;
+			}
+			.on.t1{
+				background: url(./img/t1_on.png) no-repeat center;
+			}
+			.on.t2{
+				background: url(./img/t2_on.png) no-repeat center;
+			}
+			.on.t3{
+				background: url(./img/t3_on.png) no-repeat center;
+			}
+			.on.t4{
+				background: url(./img/t4_on.png) no-repeat center;
+			}
+			.item{
+				transition: all 1s ease;
+			}
+			.p{
+				opacity: 0;
+			}
+			.p,.name,.p img{
+				transition: all 1s ease;
+			}
+			.show{
+				opacity: 1;
+			}
+			
+			.p1 .name {
+				position: absolute;
+				width: 305px;
+				height: 413px;
+				left: 108px;
+				transform: translateX(-20%);
+				bottom: 200px;
+				background: url(./img/sprite.png) no-repeat -274px 0px;
+			}
+			.p2 .name {
+				position: absolute;
+				width: 293px;
+				height: 407px;
+				left: 186px;
+				bottom: 200px;
+				transform: translateX(-20%);
+				background: url(./img/sprite.png) no-repeat 0px -421px;
+			}
+			.p3 .name {
+				position: absolute;
+				width: 277px;
+				height: 408px;
+				left: 186px;
+				bottom: 200px;
+				transform: translateX(-20%);
+				background: url(./img/sprite.png) no-repeat -585px 0px;
+			}
+			.p4 .name {
+				position: absolute;
+				width: 268px;
+				height: 415px;
+				left: 186px;
+				bottom: 200px;
+				transform: translateX(-20%);
+				background: url(./img/sprite.png) no-repeat 0px 0px;
+			}
+			
+			.box .p1 img {
+				left: 300px;
+				transform: translateX(20%);
+			}
+			.box .p2 img {
+				left: 500px;
+				transform: translateX(20%);
+			}
+			.box .p3 img {
+				left: 400px;
+				transform: translateX(20%);
+			}
+			.box .p4 img {
+				left: 450px;
+				transform: translateX(20%);
+			}
+			
+			.box .p1.show .name, .box .p2.show .name, .box .p3.show .name, .box .p4.show .name {
+				opacity: 1;
+				transform: translateX(0);
+			}
+			.box .p1.show img, .box .p2.show img, .box .p3.show img, .box .p4.show img {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+		    <div class="nav">
+		        <ul>
+		            <li class="item t1">
+		                <i></i>		
+		            </li>
+		            <li class="item t2">
+		                <i></i>
+					</li>
+		            <li class="item t3">
+		                <i></i>
+		            </li>
+		            <li class="item t4">
+		                <i></i>
+		            </li>
+		        </ul>
+		    </div>
+		    <div class="box">
+		        <div class="p p1">
+		            <span class="name"></span>
+		            <img src="img/p1.png" alt="">
+		        </div>
+		        <div class="p p2">
+		                <span class="name"></span>
+		                <img src="img/p2.png" alt="">
+		        </div>
+		        <div class="p p3">
+		            <span class="name"></span>
+		            <img src="img/p3.png" alt="">
+		        </div>
+		        <div class="p p4">
+		                <span class="name"></span>
+		                <img src="img/p4.png" alt="">
+		        </div>
+		    </div>
+		</div>
+		
+		
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+		<script type="text/javascript">
+			$(function(){
+			    $(".nav li").on("click",function(){
+					console.log('111');
+			        $(this).addClass('on').siblings().removeClass('on');	//siblings()选中所有的兄弟结点(不包括自己)
+			        q_index = $(this).index();		//取到点击的索引
+			        $(".p").eq(q_index).addClass('show').siblings().removeClass('show');
+			    })
+			})
+		</script>
+	</body>
+</html>

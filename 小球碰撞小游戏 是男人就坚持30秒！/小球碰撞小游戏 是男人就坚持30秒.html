@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>小球碰撞小游戏 是男人就坚持30秒！</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background-color: #326b86;
+			}
+			.time{
+				margin: 10px auto;
+				text-align: center;
+			}
+			.wrapper{
+				width: 450px;
+				height: 450px;
+				margin: 0 auto;
+				background-color: #222222;
+				position: relative;
+			}
+			.moveBall{
+				background-color: red;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				position: absolute;
+				top: 200px;
+				left: 200px;
+				z-index: 1;
+			}
+			.green{
+				background-color: greenyellow;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				position: absolute;
+				
+			}
+		</style>
+	</head>
+	<body>
+		<p class="time">已坚持0秒</p>
+		<div class="wrapper">
+			<div class="moveBall"></div>
+		</div>
+		<p>游戏规则：鼠标移动到红色部分，拖动红块，避免碰到绿色部分，不要碰到黑色区域，坚持的时间越长你越牛X！是男人就至少坚持30秒，本游戏支持IE，Chrome，Firefox，safari等浏览器！
+		</p>
+		
+		
+		<script type="text/javascript">
+			var moveBall = document.querySelector('.moveBall');
+			var wrapper = document.querySelector('.wrapper');
+			var time = document.querySelector('.time');
+			console.log(time)
+			var num = 0;	//分数
+			var over = false;
+			
+			//拖拽小球
+			function onMoveBall(){
+				moveBall.onmousedown = function(e){
+					var e = e || window.event;
+					//要减去自身的一半
+					var ballWidth = this.offsetWidth;
+					var ballHeight = this.offsetHeight;
+					
+					//点击时,记录x
+					var downX = e.pageX - this.offsetLeft;
+					var downY = e.pageY - this.offsetTop;
+					
+					var that = this;
+					document.onmousemove = function(e){
+						var e = e || window.event;
+						//移动时记录X
+						var moveX = e.pageX;
+						var moveY = e.pageY;
+						//差值就是要移动的距离
+						var dx = moveX - downX;
+						var dy = moveY - downY;
+						that.style.left = dx + 'px';
+						that.style.top = dy + 'px';
+						
+						//检测拖动边界碰撞**
+						var ballLeft = moveBall.offsetLeft;
+						var ballTop = moveBall.offsetTop;
+						if(ballLeft<0 || ballLeft>wrapper.offsetWidth-ballWidth || ballTop<0 || ballTop>wrapper.offsetHeight-ballHeight){  
+							gameOver();
+						}
+					}
+					
+					
+					document.onmouseup = function(){
+						document.onmousemove = null;
+					}
+				}
+			}
+			
+			//生成绿球,构造函数写参数
+			function CreateBall(){
+				this.ball = document.createElement('div');
+				this.ball.className = 'green';
+				//横向随机出现绿球
+				this.ball.style.left = Math.floor(Math.random()*(wrapper.offsetWidth - 50)) + 'px';      
+				wrapper.appendChild(this.ball);
+				this.move();
+				
+			}
+			
+			//绿球碰撞反弹
+			CreateBall.prototype.move = function(){
+				var speedX = 2;
+				var speedY = 3;
+				
+				var that = this;
+				
+				var moveTimer = setInterval(function(){
+					//检查碰撞
+					that.check();
+					
+					var Gleft = that.ball.offsetLeft;
+					var Gtop = that.ball.offsetTop;
+					Gleft += speedX;
+					Gtop += speedY;
+					
+					if(Gleft > wrapper.clientWidth - that.ball.clientWidth){
+						speedX *=-1;						
+					}else if(Gleft < 0){
+						speedX *=-1;
+					}else if(Gtop > wrapper.clientHeight - that.ball.clientHeight){						
+						speedY *=-1;
+					}else if(Gtop < 0){						
+						speedY *=-1;
+					}
+					
+					that.ball.style.left = Gleft + 'px';
+					that.ball.style.top = Gtop + 'px';
+					
+					
+				},25)
+			}
+			
+			//是否碰撞
+			CreateBall.prototype.check = function(){
+				//绿球圆心位置
+				var G_left = this.ball.offsetLeft + this.ball.clientWidth/2;
+				var G_top = this.ball.offsetTop + this.ball.clientHeight;
+				//红球圆心
+				var R_left = moveBall.offsetLeft + moveBall.clientWidth/2;
+				var R_top = moveBall.offsetTop + moveBall.clientHeight/2;
+				// console.log(G_left,G_top)
+				//两点间距离公式:
+				var dx = Math.abs(G_left - R_left);	//相减取绝对值
+				var dy = Math.abs(G_top - R_top)
+				// var dis = Math.floor(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)));
+				var dis = Math.floor(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)));
+				console.log(dis)
+				if(dis < 50){
+					gameOver();
+				}
+			}
+			
+			//计时
+			function timer(){
+				clearInterval(settime)
+				var settime = setInterval(function(){
+					num++;
+					new CreateBall();
+					time.innerText = '已坚持'+num+'秒';
+				},1000)
+			}
+			
+			
+			//游戏结束
+			function gameOver(){
+				over = true;
+				document.onmousemove = null;
+				window.location.reload();
+				alert('游戏结束 ! 共坚'+ num +'持秒');
+			}
+			
+			onMoveBall();
+			timer();
+			
+			
+			
+			
+			
+			
+			
+			
+			// // //源码中的结构:	就是把所有代码写在对象里,这样在其他项目中使用时不会造成变量重名之类的
+			// //	也可以说是一种封装
+			// 	var game = {
+			// 		//各种代码,只是因为在对象里所以变个型,如:
+			// 		//声明变量:
+			// 		ball: document.getElementById('move'),
+			// 		//使用变量
+			// 		this.ball
+			// 		//声明函数
+			// 		init: function () {		//初始化
+			// 		    this.creatBall(this.movePlus);//创建小球
+			// 		    this.dragBoll(this.movePlus);//小球拖拽
+			// 		    this.timerRun();//时间计时
+			// 		},
+			// 		timerRun: function () {		//已坚持多少秒
+			// 		    var self = this;
+			// 		    this.timer = setInterval(function () {
+			// 		        self.num++;
+			// 		        self.time.innerHTML = '已完成' + self.num + '秒';
+			// 		    }, 1000)
+			// 		},
+			// 		///
+			// 		///
+			// 		//各种代码...
+			// 		//
+			// 		//
+			// 		//执行函数:
+			// 		this.timerRun()
+			// 	};
+			// 	//最后执行初始化函数
+			// 	game.init();
+		</script>
+	</body>
+</html>

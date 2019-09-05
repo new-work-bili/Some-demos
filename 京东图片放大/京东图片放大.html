@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>京东图片放大</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+
+			.small {
+				width: 200px;
+				height: 267px;
+				margin-top: 100px;
+				margin-left: 100px;
+				position: relative;
+
+			}
+
+			.big {
+				margin-left: 400px;
+				width: 412px;
+				height: 412px;
+				position: absolute;
+				top: 90px;
+				overflow: hidden;
+			}
+
+			.big img {}
+
+			.mask {
+				position: absolute;
+				top: 0;
+				width: 110px;
+				height: 110px;
+				background: rgba(255, 255, 0, 0.4);
+				cursor:move;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- .small宽度/.mask宽度 = big.jpg宽度/.big宽度 -->
+		<div class="small">
+			<img src="./img/small.png"> <!-- 200*267* -->
+			<!-- 遮罩 -->
+			<div class="mask"></div>
+		</div>
+		<div class="big">
+			<img src="./img/big.jpg"> <!-- 750*1000 -->
+		</div>
+
+
+
+		<script type="text/javascript">
+			var wrapper = document.querySelector('.wrapper');
+			var small = document.querySelector('.small');
+			var mask = document.querySelector('.mask');
+			var big = document.querySelector('.big');
+			var Bimg = big.children[0]
+			// console.log(Bimg)
+			
+			small.onmousemove = function(e){
+				var e = e || window.event;
+				
+				var x = e.pageX - small.offsetLeft;
+				var y = e.pageY - small.offsetTop;
+				//小图中最大移动距离,以遮罩层中心为准
+				var max_X =small.clientWidth-mask.clientWidth/2;
+				var max_Y =small.clientHeight-mask.clientHeight/2;
+				
+				//防止遮罩层出界
+				//若x小于遮罩层宽度的一半,那么x=遮罩层宽度的一半,否则x=x;
+				x = x<mask.clientWidth/2?mask.clientWidth/2:x;
+				x = x>max_X?max_X:x;
+				y = y<mask.clientHeight/2?mask.clientHeight/2:y;
+				y = y>max_Y?max_Y:y;
+				// console.log(x,y)
+				
+				mask.style.top = y - mask.clientHeight/2+'px';
+				mask.style.left = x - mask.clientWidth/2+'px';
+				
+				
+				//对于大图,把.big看成遮罩层
+				//小图的移动距离/大图的移动距离 = 小图的最大移动距离/大图的最大移动距离
+				//大图的移动距离 = 小图的移动距离*大图的最大移动距离/小图的最大移动距离
+				
+				
+				//大图的最大移动距离= 图片宽度-遮罩层宽度的一半;以中心为基准
+				var Bmax_X = Bimg.clientWidth - big.clientWidth/2;
+				var Bmax_Y = Bimg.clientHeight - big.clientHeight/2;
+				//小图的移动距离:mask.offsetLeft,mask.offsetTop	;小图的最大移动距离:max_X,max_Y
+				Bimg.style.marginLeft = -mask.offsetLeft * Bmax_X / max_X + 'px';
+				Bimg.style.marginTop = -mask.offsetTop * Bmax_Y / max_Y + 'px';
+				console.log(Bimg.style.marginLeft)
+			}
+		</script>
+	</body>
+</html>
