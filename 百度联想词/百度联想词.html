@@ -54,20 +54,24 @@
 			var word = document.getElementById('word')
 			var list = document.getElementById('list')
 			var listData = document.getElementsByClassName('listData')
-
+			
+			//防抖
+			var timer = false
 			word.oninput = function() {	//oninput:当用户向 <input> 中尝试输入时执行 JavaScript：
 				var value = this.value;
-				//console.log(value);
-				if (value) {
-					var oScript = document.createElement('script');
-					//设置jsonp,此网址是百度提供的一个API,wd=关键字	cb=回调函数,
-					oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + value + '&cb=callBack';
-					document.body.appendChild(oScript);
-					document.body.removeChild(oScript);
-					/* oScript.remove(); */
-					//console.log(oScript)
-				}
-				list.style.display = 'none' //要有''
+				clearTimeout(timer)
+				timer = setTimeout(function(){
+					if (value) {
+						var oScript = document.createElement('script');
+						//设置jsonp,此网址是百度提供的一个API,wd=关键字	cb=回调函数,
+						oScript.src = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + value + '&cb=callBack';		
+						document.body.appendChild(oScript);
+						document.body.removeChild(oScript);	
+						/* oScript.remove(); */
+					}
+					list.style.display = 'none' //要有''
+				},1000)
+				
 			}
 
 			
@@ -89,29 +93,6 @@
 				}
 			
 			}
-			
-			//json回调函数;为什么这样写错 了？
-			  /* function callBack(data) {
-				
-				var listData = data.s
-			
-				if (listData.length == 0) {
-					list.style.display = 'none';
-				} else {
-					listData.forEach((item, index) => {
-						//console.log(word.value)
-						var li = document.createElement('li')
-						var a = document.createElement('a')
-						//此网址是跳转搜索
-						li.className = 'listData';
-						a.href = 'https://www.baidu.com/s?wd=' + item;
-						a.innerText = item;
-						li.appendChild(a);
-						list.appendChild(li);
-						list.style.display = 'block' ;//要有''
-					})
-				}
-			} */
 		</script>
 	</body>
 </html>

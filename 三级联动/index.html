@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>三级联调</title>
+		<style type="text/css">
+
+		</style>
+	</head>
+	<body>
+
+		<div class="wrapper">
+			<!-- ??? -->
+			<select id="province">
+				<option value="volvo">--请选择省份--</option>
+			</select>
+			<select id="city">
+				<option value="city">--选择城市--</option>
+			</select>
+			<select id="child">
+				<option value="child">--选择地区--</option>
+			</select>
+			<button class="send">发送</button>
+		</div>
+		<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="./data.js"></script>
+		<script type="text/javascript">
+			
+			var provinceArr = cityData.map((item) => {	//省份数组
+				return item.text
+			})
+			var cityArr,		//对应的城市数组
+				childArr;		//对应的地区数组
+			
+			var provinceData,	//选择的省份
+				cityData,		//选择的城市
+				childData;		//选择的地区
+
+			console.log(city)
+			var str = ''
+			provinceArr.forEach((item) => {
+				$('#province').append(`<option value="${item}">${item}</option>`)
+			})
+			
+			//选择省份后筛选出对应的城市
+			$('#province').on('change',function(){
+				//初始化
+				$('#city').html(`<option value="city">--选择城市--</option>`)
+				provinceData = $(this).val()		
+				var city = cityData.filter((item)=>{	
+					return item.text == provinceData
+				})
+				cityArr = city[0].children			//对应的城市数组
+				console.log(cityArr)
+				cityArr.forEach((item)=>{
+					$('#city').append(`<option value="${item.text}">${item.text}</option>`)
+				})
+			})
+			
+			//选择城市后筛选出对应的区域
+			$('#city').on('change',function(){
+				//初始化
+				$('#child').html(`<option value="child">--选择地区--</option>`)
+				cityData = $(this).val()		//选择的城市
+				var child = cityArr.filter((item)=>{	
+					return item.text == cityData
+				})
+				childArr = child[0].children			//对应的城市数组
+				console.log(childArr)
+				childArr.forEach((item)=>{
+					$('#child').append(`<option value="${item.text}">${item.text}</option>`)
+				})
+			})
+			
+			$('#child').on('change',function(){
+				childData = $(this).val()
+			})
+			
+			var fromData = {
+				province:provinceData,
+				city:cityData,
+				child:childData
+			}
+			$('.send').on('click',function(){
+				$.ajax({
+					type:'POST',
+					url:'demo_test.txt',
+					data:fromData
+				}).done((res)=>{
+					console.log(res)
+				})
+			})
+			
+			// $('#province').on('click',function(){			为什么单机会有延迟？？？？
+			// 	province.forEach((item)=>{	
+			// 		// str +=`<option value="${item}">${item}</option>`
+			// 		// $('#province').html(str)
+			// 		console.log(str)
+			// 		$('#province').append(`<option value="${item}">${item}</option>`)
+			// 	})
+			// })
+		</script>
+	</body>
+</html>

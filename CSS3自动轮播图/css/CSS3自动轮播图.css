@@ -1,0 +1,88 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+.main {
+	transform-style: preserve-3d;
+	perspective: 800px;				/* 要写在父级上 */
+	position: relative;		
+	height: 200px;
+	margin-top: 200px;
+	
+}
+.main img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left:-150px      ;/* -480 302 */
+	margin-top: -100px;
+	width: 300px;
+	height: 200px;
+	border-radius: 10px;
+	
+	
+}
+.img1{
+	transform: translateZ(300px);
+	animation: anime1 6s ease 1s infinite;
+}
+.img1 : hover{
+	animation-play-state: paused;
+}
+.img2{
+	transform: translateX(150px) translateZ(200px) rotateY(-30deg);
+	animation: anime2 6s ease 1s infinite;
+}
+.img3{
+	transform: translateX(300px) translateZ(100px) rotateY(-30deg);
+	animation: anime3 6s ease 1s infinite;
+	
+}
+.img4{
+	transform: translateX(-300px) translateZ(100px) rotateY(30deg);
+	animation: anime4 6s ease 1s infinite;
+}
+.img5{
+	transform: translateX(-150px) translateZ(200px) rotateY(30deg);
+	animation: anime5 6s ease 1s infinite;
+}
+@keyframes anime1{			/* 第一个图 */
+	0% {transform: translateZ(300px);}
+	20%{transform: translateX(-150px) translateZ(200px) rotateY(30deg);}
+	40%{transform: translateX(-300px) translateZ(100px) rotateY(30deg);}
+	60%{transform: translateX(300px) translateZ(100px) rotateY(-30deg);}
+	80%{transform: translateX(150px) translateZ(200px) rotateY(-30deg);}
+	100%{transform: translateZ(300px);}
+}
+@keyframes anime2{
+	0% {transform: translateX(150px) translateZ(200px) rotateY(-30deg);}
+	20%{transform: translateZ(300px);}
+	40%{transform: translateX(-150px) translateZ(200px) rotateY(30deg);}
+	60%{transform: translateX(-300px) translateZ(100px) rotateY(30deg);}
+	80%{transform: translateX(300px) translateZ(100px) rotateY(-30deg);}
+	100%{transform: translateX(150px) translateZ(200px) rotateY(-30deg);}
+}
+@keyframes anime3{
+	0% {transform: translateX(300px) translateZ(100px) rotateY(-30deg);}
+	20%{transform: translateX(150px) translateZ(200px) rotateY(-30deg);}
+	40%{transform: translateZ(300px);}
+	60%{transform: translateX(-150px) translateZ(200px) rotateY(30deg);}
+	80%{transform: translateX(-300px) translateZ(100px) rotateY(30deg);}
+	100%{transform: translateX(300px) translateZ(100px) rotateY(-30deg);}
+}
+@keyframes anime4{
+	0% {transform: translateX(-300px) translateZ(100px) rotateY(30deg);}
+	20%{transform: translateX(300px) translateZ(100px) rotateY(-30deg);}
+	40%{transform: translateX(150px) translateZ(200px) rotateY(-30deg);}
+	60%{transform: translateZ(300px);}
+	80%{transform: translateX(-150px) translateZ(200px) rotateY(30deg);}
+	100%{transform: translateX(-300px) translateZ(100px) rotateY(30deg);}
+}
+@keyframes anime5{
+	0% {transform: translateX(-150px) translateZ(200px) rotateY(30deg);}
+	20%{transform: translateX(-300px) translateZ(100px) rotateY(30deg);}
+	40%{transform: translateX(300px) translateZ(100px) rotateY(-30deg);}
+	60%{transform: translateX(150px) translateZ(200px) rotateY(-30deg);}
+	80%{transform: translateZ(300px);}
+	100%{transform: translateX(-150px) translateZ(200px) rotateY(30deg);}
+}
