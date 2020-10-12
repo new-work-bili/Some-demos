@@ -1,0 +1,37 @@
+.router{
+	.jump{
+		margin: 0 20px;
+		text-decoration: underline;
+		color: #0000ff;
+		font-weight: 600;
+	}
+}
+
+
+
+//嫌麻烦就写一块了...
+//regTest的css
+.regWrapper_div{
+	&>span{
+		margin-left: 25px;
+		font-weight: 600;
+	}
+	input{
+		font-size: 20px;
+		margin-top: 25px;
+	}
+	.error_span{
+		color: red;
+	}
+	
+	//不同强度css
+	.easy{
+		color: #f92672;
+	}
+	.Medium{
+		color: #ffa22e;
+	}
+	.Hot{
+		color: limegreen;
+	}
+}
