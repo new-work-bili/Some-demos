@@ -9,5 +9,22 @@
 </head>
 <body>
     <h1>Service Worker 离线缓存 Demo</h1>
+	<!-- <script src="index.js" type="text/javascript"></script> -->
+	<script type="text/javascript">
+		// 判断浏览器是否支持 Service Worker
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				// 注册 Service Worker
+				navigator.serviceWorker.register('./sw.js')
+					.then(function(registration) {
+						console.log('sw.js 注册成功', registration.scope);
+					})
+					.catch(function(err) {
+						console.log('sw.js 注册失败 ', err);
+					});
+			});
+		}
+		
+	</script>
 </body>
 </html>
