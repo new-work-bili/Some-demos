@@ -48,3 +48,15 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+/* history加粗 */
+.hiddenHistory{
+  /* font-weight: 900; */
+  color: red;
+}
+
+
+/* 循环组件wrapper */
+.itemWrapper{
+  width: 108px;
+}
