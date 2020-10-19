@@ -60,3 +60,20 @@ ol, ul {
 .itemWrapper{
   width: 108px;
 }
+
+/* 高亮胜出的棋子 */
+.winIndex{
+  animation: hidden 0.5s linear;
+}
+
+@keyframes hidden{
+  0%{
+    background-color: yellow;
+  }
+  75%{
+    background-color:rgba(255, 255, 0,0.5);
+  }
+  100%{
+    background-color: #fff;
+  }
+}
