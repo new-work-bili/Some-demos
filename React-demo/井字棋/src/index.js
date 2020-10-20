@@ -27,9 +27,16 @@ class Game extends React.Component {
   }
   //子级点击触发的事件，其实就是子级反馈点击了那个方块i,进而改变父级state中的记号数组squarse
   handleClick(i) {
-    //此处为了是跳转之前的历史之后再进行下棋，那么之前未来下的棋就不算了
-    const history = this.state.history.slice(0, this.state.stepNumber + 1); //!!!!
-    const current = history[history.length - 1]; //当前的
+
+    let current; //当前的
+    let history;
+    if(this.state.clickButton === "当前升序，点击降序"){
+      history = this.state.history.slice(0, this.state.stepNumber + 1); 
+      current = history[history.length - 1];
+    }else{  //#4：反转了history，所以history的取值和当前展示current的取值都要不同处理一下
+      history = this.state.history.slice(this.state.history.length - this.state.stepNumber - 1); 
+      current = history[0]; 
+    }
     const squares = current.squares.slice();
     let historyIndex = ++this.state.historyIndex; //#4为了历史记录的响应顺序是死的；这样就算反转了也不会混乱
 
@@ -48,12 +55,14 @@ class Game extends React.Component {
               zuobiaoIndex: i,
               index: historyIndex,
             },
-          ].concat(history);
+          ].concat(history);          //#4
     //以判断获胜或者当前点击的方块已被点击
     if (calculateWinner(squares)[0] || squares[i]) {
+      console.log('ttt');
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
+
 
     this.setState(
       {
@@ -81,9 +90,10 @@ class Game extends React.Component {
 
   //跳转历史记录
   jumpTo(item, step, desc) {
+    console.log('jumpTo:',this.state.history);
     this.setState({
-      stepNumber: step,
-      xIsNext: step % 2 === 0,
+      stepNumber: desc,
+      xIsNext: desc % 2 === 0,
       hiddenHistory: item.zuobiaoIndex === undefined ? null : item.zuobiaoIndex, //#2
       historyIndex: desc, //#4:重置
     });
@@ -100,6 +110,8 @@ class Game extends React.Component {
     this.setState({
       history,
       clickButton,
+    },()=>{
+      console.log(this.state.history);
     });
   };
 
@@ -107,9 +119,16 @@ class Game extends React.Component {
     //把原先判断胜者，标记都交由顶级组件判断
     //使用最新一次历史记录来确定并展示游戏的状态：
     const history = this.state.history; //就是一个数组，每次点击之后都把当前的9个格子的状态(这个是一个数组，9个方块9个值)push进history
-    const current = history[this.state.stepNumber]; //current放的是当前展示的9格子的状态（有可能是最新点击之后的，也有可能是选择历史记录的）这一切都由step决定(就是步数)；进而去取history里面的值
-    const winner = calculateWinner(current.squares)[0];
+    let current;                        //current放的是当前展示的9格子的状态（有可能是最新点击之后的，也有可能是选择历史记录的）这一切都由step决定(就是步数)；进而去取history里面的值
+    if(this.state.clickButton == '当前升序，点击降序'){
+      current = history[this.state.stepNumber]; 
+    }else{
+      //反转了history数组，所以取值要改变
+      let index = history.length -1-this.state.stepNumber===0?0:history.length -1-this.state.stepNumber;
+      current = history[index];
+    }
 
+    const winner = calculateWinner(current.squares)[0];
     const winIndex = calculateWinner(current.squares)[1]; //#5:获胜位置高亮
     //map history，进而循环出历史记录
     const moves = history.map((item, index) => {
