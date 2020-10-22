@@ -27,13 +27,13 @@ class Game extends React.Component {
   }
   //子级点击触发的事件，其实就是子级反馈点击了那个方块i,进而改变父级state中的记号数组squarse
   handleClick(i) {
-
     let current; //当前的
     let history;
     if(this.state.clickButton === "当前升序，点击降序"){
       history = this.state.history.slice(0, this.state.stepNumber + 1); 
       current = history[history.length - 1];
-    }else{  //#4：反转了history，所以history的取值和当前展示current的取值都要不同处理一下
+      
+    }else{  //#4反转了history，所以history的取值和当前展示current的取值都要不同处理一下
       history = this.state.history.slice(this.state.history.length - this.state.stepNumber - 1); 
       current = history[0]; 
     }
