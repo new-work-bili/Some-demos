@@ -17,16 +17,11 @@ class A extends React.Component {
 	componentDidMount(){
 		this.setState({value:this.state.value+1})
 		console.log(this.state.value);//0;未更新
-		this.setState({value:this.state.value++},()=>{
-			console.log('callBack',this.state.value);//0;最终结果，
+		this.setState({value:++this.state.value},()=>{
+			console.log('callBack',this.state.value);//1;最终的更新结果，
 		})
-		// this.state.value++;
-		console.log(this.state.value);//1??
+		console.log(this.state.value);//1：因为没有异步更新,所以直接拿到的是++的1
 
-		setTimeout(()=>{
-			console.log('setTimeout:',this.state.value);//0
-		},0)
-		
 	}
 	render() {
 		return ( 
