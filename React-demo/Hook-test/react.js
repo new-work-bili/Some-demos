@@ -1,4 +1,8 @@
 
+function hook(){
+	
+}
+
 ReactDOM.render( 
 	<div >
 		<h1>Hook-test</h1>
