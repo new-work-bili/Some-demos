@@ -32,6 +32,7 @@ export default class home extends PureComponent {
 					<Link to="/DanmuRoom/entrance_room" className="jump">扫描的二维码和显示的弹幕</Link>
 					<Link to="/DanmuRoom/userSend" className="jump">跳转页面,用户发送弹幕的页面</Link>
 					<Link to="/regTest" className="jump">正则匹配代码强度</Link>
+					<Link to="/hook" className="jump">Hook-Test</Link>
 				</div>
 				
 				<Child name={this.state.name} sendFunc={this.jieshou}></Child>
