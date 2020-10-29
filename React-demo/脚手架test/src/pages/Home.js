@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { PureComponent } from "react";
 import Child from "./child.js";
 import "../assets/style/Home.scss";
+import ReduxTest from './reduxTest'
 import { testContext } from "./context";
 
 export default class home extends PureComponent {
@@ -18,7 +19,6 @@ export default class home extends PureComponent {
 	  age: "man",
 	  providerValue:'DefaultValue'
     };
-    // console.log('constructor')
   }
 
   jieshou = (data) => {
@@ -57,6 +57,8 @@ export default class home extends PureComponent {
         <testContext.Provider value={this.state.providerValue}>
           <Child name={this.state.name} sendFunc={this.jieshou}></Child>
         </testContext.Provider>
+        <hr></hr>
+        <ReduxTest></ReduxTest>
       </div>
     );
   }
