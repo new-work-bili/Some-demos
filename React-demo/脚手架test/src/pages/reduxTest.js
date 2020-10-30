@@ -7,7 +7,6 @@ export default class reduxTest extends PureComponent {
         console.log(store.getState());
         return (
             <div>
-                
             </div>
         )
     }
