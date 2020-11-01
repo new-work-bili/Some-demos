@@ -24,4 +24,5 @@ const store = createStore(reducer);
 //dispath,调用更改state的值
 store.dispatch({type:'ADD',other:'随便，的哥type就是为了在reducer里能匹配对应的处理，剩下的属性就随便，可能就会说方便处理数值把'})
 
+
 export default store;

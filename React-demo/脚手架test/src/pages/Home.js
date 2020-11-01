@@ -2,8 +2,19 @@ import { Link } from "react-router-dom";
 import React, { PureComponent } from "react";
 import Child from "./child.js";
 import "../assets/style/Home.scss";
-import ReduxTest from './reduxTest'
 import { testContext } from "./context";
+
+import ReduxTest from "./reduxTest";
+import reactReduxTest from "./react-reduxTest";
+
+
+
+import { Provider, connect } from "react-redux"; //react-redux
+import store from "../redux/reduxStore"; //redux
+import { mapStateToProps, mapDispatchToProps } from "../redux/react-redux";
+//使用react-redux的话需要经过connect包装
+const ReactReduxTest = connect(mapStateToProps, mapDispatchToProps)(reactReduxTest);
+
 
 export default class home extends PureComponent {
   // constructor()中完成了React数据的初始化，它接受两个参数：props和context，当想在函数内部使用这两个参数时，需使用super()传入这两个参数。
@@ -12,15 +23,17 @@ export default class home extends PureComponent {
   static defaultProps = {
     name: "name",
   };
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: "lpp",
-	  age: "man",
-	  providerValue:'DefaultValue'
+      age: "man",
+      providerValue: "DefaultValue",
     };
   }
-
+  componentDidMount() {
+    console.log("homeProps", this.props);
+  }
   jieshou = (data) => {
     console.log("在父组件打印子组件传来的数据：", data);
   };
@@ -50,8 +63,14 @@ export default class home extends PureComponent {
         </div>
         <hr></hr>
         <p>
-		我是父级，
-          <button onClick={()=>{this.setState({providerValue:this.state.providerValue+1})}}>点我更改context</button>
+          我是父级，
+          <button
+            onClick={() => {
+              this.setState({ providerValue: this.state.providerValue + 1 });
+            }}
+          >
+            点我更改context
+          </button>
         </p>
         {/* 设置context，深度传递参数的时候，子组件不用层层传递 */}
         <testContext.Provider value={this.state.providerValue}>
@@ -59,6 +78,8 @@ export default class home extends PureComponent {
         </testContext.Provider>
         <hr></hr>
         <ReduxTest></ReduxTest>
+        <hr></hr>
+        <ReactReduxTest></ReactReduxTest>
       </div>
     );
   }
