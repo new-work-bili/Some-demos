@@ -1,4 +1,3 @@
-
 /* 
 这个函数允许我们将 store 中的数据作为 props 绑定到组件上。
 传入参数是redux的store，返回的是一个store对象
@@ -36,5 +35,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 //   };
 // }
 
-
-export  {mapStateToProps,mapDispatchToProps};
+export { mapStateToProps, mapDispatchToProps };
