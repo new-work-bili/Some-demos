@@ -9,13 +9,9 @@ export default class reduxTest extends PureComponent {
     }
   }
   render() {
-    // console.log(store.dispatch({ type: "ADD", other: "dddd" }));
-    //获取store
-    // let getStore = store.getState();
-    // console.log(store.getState());
     //subscribe监听store的变化，在回调函数函数中赋值
     store.subscribe(()=>{
-      console.log(store.getState().num);
+      console.log(store.getState());
       this.setState({
         storeNum:store.getState().num
       })
