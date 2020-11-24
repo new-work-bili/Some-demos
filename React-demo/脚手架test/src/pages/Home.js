@@ -3,7 +3,6 @@ import React, { PureComponent } from "react";
 import Child from "./child.js";
 import "../assets/style/Home.scss";
 import { testContext } from "./context";
-
 import ReduxTest from "./reduxTest";
 import reactReduxTest from "./react-reduxTest";
 
@@ -60,6 +59,9 @@ export default class home extends PureComponent {
           <Link to="/hook" className="jump">
             Hook-Test
           </Link>
+          <Link to="/cookie/login" className="jump">
+            测试Cookie登陆
+          </Link>
         </div>
         <hr></hr>
         <p>
@@ -80,6 +82,7 @@ export default class home extends PureComponent {
         <ReduxTest></ReduxTest>
         <hr></hr>
         <ReactReduxTest></ReactReduxTest>
+        <hr></hr>
       </div>
     );
   }

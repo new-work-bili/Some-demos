@@ -7,6 +7,8 @@ import Home from "./pages/Home.js";
 import Shengmingzhouqi from "./pages/shengmingzhouqi-test.js";
 import regTest from "./pages/reg-test.js";
 import HookTest from "./pages/hook.js";
+import Login from "./pages/cookie-test/Login.js";
+
 
 
 
@@ -19,6 +21,7 @@ function App(props) {
         <Route path="/shengmingzhouqi" exact component={Shengmingzhouqi} />
         <Route path="/regTest" exact component={regTest} />
         <Route path="/hook" exact component={HookTest} />
+        <Route path="/cookie/login" exact component={Login} />
       </Switch>
     </div>
   );
