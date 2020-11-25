@@ -8,13 +8,16 @@ const loginWrapper = {
 
 export default class Login extends PureComponent {
     login = ()=>{
-        const xhr = new XMLHttpRequest();
-        // xhr.withCredentials = true
         var url = "http://localhost:3001/login/"
-        // var quer= '/login/'
-        xhr.open("POST",url,true)
         var data = {account:1,password:0}
         console.log(JSON.stringify(data));
+
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open("POST",url,true);
+        // xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+        xhr.setRequestHeader("Content-type","application/json")
+
         xhr.send(JSON.stringify(data))
 
         xhr.onreadystatechange = function(data){
