@@ -12,3 +12,7 @@
 
 ## todo
 +   axios能用在react吗
+<!-- +   设置httponly -->
++   设置http=only只能防止浏览器脚本攻击？中间人攻击呢？
++   cookie签名是如何比对的
++   如何知道用户更改了cookie
