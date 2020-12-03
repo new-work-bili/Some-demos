@@ -13,8 +13,9 @@
 
 ## todo
 +   使用axios
-+   中间件,的链式
 +   cookie的path和admin
+
+<!-- +   中间件,的链式https://expressjs.com/zh-cn/guide/using-middleware.html -->
 <!-- +   现在是两个组件，跳转两个路由：能不能把老师和学生组件合并；这个就更简单了懒得写了：
     1.  首先如果组件合并，那么就是登陆之后跳转相同的路由，然后请求相同的接口。
     2.  后台就根据cookie的身份派发对应的数据 -->
