@@ -62,6 +62,9 @@ export default class home extends PureComponent {
           <Link to="/cookie/login" className="jump">
             测试Cookie登陆
           </Link>
+          <Link to="memo" className="jump">
+          memo
+          </Link>
         </div>
         <hr></hr>
         <p>

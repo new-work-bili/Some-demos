@@ -5,6 +5,7 @@ function Test(props) {
     const [other, setOther] = useState("other");
     const [other2, setOther2] = useState("other3");
     let is = true;
+    //componentDidUpdate和componentDidMount的。
     useEffect(() => {
         //变化时调用
         console.log(init, other, other2);
