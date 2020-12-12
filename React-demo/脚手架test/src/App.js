@@ -7,7 +7,7 @@ import RouterTest from "./pages/router-test.js";
 import Home from "./pages/Home.js";
 import Shengmingzhouqi from "./pages/shengmingzhouqi-test.js";
 import regTest from "./pages/reg-test.js";
-import HookTest from "./pages/hook.js";
+import HookTest from "./pages/hook/hookMain.js";
 import Login from "./pages/cookie-test/Login.js";
 import CookieStudent from './pages/cookie-test/Student'
 import CookieTeach from './pages/cookie-test/Teach'

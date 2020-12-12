@@ -5,7 +5,7 @@ function Test(props) {
     const [other, setOther] = useState("other");
     const [other2, setOther2] = useState("other3");
     let is = true;
-    //在每轮渲染之后执行
+    //useEffect:在每轮渲染之后执行
     //相当于componentDidUpdate和componentDidMount
     useEffect(() => {
         //变化时调用
@@ -17,9 +17,12 @@ function Test(props) {
         }
 
         //如果配置了依赖项，也就是useEffect的第二个参数，那么useEffect只会在useEffect改变时才会重新执行
+        //如果设置[]，那么useEffect只会在初次渲染后执行
     },[init]);  
 
-    console.log('hook:',props.location.search,props.location.state);
+
+
+
     const fn = () => {
         setOther(other + 2);
         setInit(init + 1);
