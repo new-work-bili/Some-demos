@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import Func from './memo_Func'
-import Hook from './memo_Hook'
+import Func from '../components/Memo/memo_Func'
+import Hook from '../components/Memo/memo_Hook'
 
 
 export default class memoMain extends PureComponent {

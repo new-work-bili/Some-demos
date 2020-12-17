@@ -7,12 +7,11 @@ import RouterTest from "./pages/router-test.js";
 import Home from "./pages/Home.js";
 import Shengmingzhouqi from "./pages/shengmingzhouqi-test.js";
 import regTest from "./pages/reg-test.js";
-import HookTest from "./pages/hook/hookMain.js";
+import HookTest from "./pages/Hook.js";
 import Login from "./pages/cookie-test/Login.js";
 import CookieStudent from './pages/cookie-test/Student'
 import CookieTeach from './pages/cookie-test/Teach'
-import Memo from './pages/memo/memoMain'
-
+import Memo from './pages/Memo'
 
 
 function App(props) {
@@ -28,7 +27,6 @@ function App(props) {
         <Route path="/cookie/student" exact component={CookieStudent} />
         <Route path="/cookie/teach" exact component={CookieTeach} />
         <Route path="/memo" exact component={Memo} />
-
       </Switch>
     </div>
   );

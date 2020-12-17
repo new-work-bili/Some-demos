@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { testContext } from "./context";
+import { testContext } from "../pages/context";
 
 class DeepChild extends PureComponent {
   constructor(props) {
