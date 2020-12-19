@@ -2,13 +2,15 @@ import { Link } from "react-router-dom";
 import React, { PureComponent } from "react";
 import Child from "../components/child.js";
 import "../assets/style/Home.scss";
-import { testContext } from "./context";
+import { testContext } from "../components/Context/context";
 import ReduxTest from "./reduxTest";
 import reactReduxTest from "./react-reduxTest";
 
 import { Provider, connect } from "react-redux"; //react-redux
 import store from "../redux/reduxStore"; //redux
 import { mapStateToProps, mapDispatchToProps } from "../redux/react-redux";
+
+
 //使用react-redux的话需要经过connect包装
 const ReactReduxTest = connect(
     mapStateToProps,
@@ -71,6 +73,9 @@ export default class home extends PureComponent {
                     </Link>
                     <Link to="memo" className="jump">
                         memo
+                    </Link>
+                    <Link to="context" className="jump">
+                    context
                     </Link>
                     <button style={styles.button}>styleTest</button>
                 </div>

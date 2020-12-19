@@ -12,6 +12,7 @@ import Login from "./pages/cookie-test/Login.js";
 import CookieStudent from './pages/cookie-test/Student'
 import CookieTeach from './pages/cookie-test/Teach'
 import Memo from './pages/Memo'
+import Context from './pages/Context'
 
 
 function App(props) {
@@ -27,6 +28,7 @@ function App(props) {
         <Route path="/cookie/student" exact component={CookieStudent} />
         <Route path="/cookie/teach" exact component={CookieTeach} />
         <Route path="/memo" exact component={Memo} />
+        <Route path="/Context" exact component={Context} />
       </Switch>
     </div>
   );

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import Hook from '../components/Hook/hook'
 import Err from '../components/Hook/error-test'
 import UseDeep from '../components/Hook/wuXianXunHuan'
+import UseContextTest from '../components/Hook/useContext'
+
 
 export default class HookTest extends PureComponent {
     render() {
@@ -14,6 +16,9 @@ export default class HookTest extends PureComponent {
                 <hr/>
                 <h2>useEffect的无限循环:</h2>
                 <UseDeep></UseDeep>
+
+                <hr/>
+                <UseContextTest></UseContextTest>
             </div>
         )
     }
