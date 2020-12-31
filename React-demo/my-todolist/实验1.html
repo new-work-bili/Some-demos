@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.test {
+			margin-left: 100px;
+			margin-top: 120px;
+			border: 3px solid #333;
+			width: 200px;
+			height: 200px;
+			padding-left: 50px;
+			box-sizing: border-box;
+		}
+
+		.float {
+			width: 50px;
+			height: 50px;
+			background-color: red;
+
+		}
+
+		.bule {
+			background-color: #00008B;
+			/* margin-right: 20px; */
+
+		}
+
+		.red {
+			float: left;
+
+		}
+
+		.parent {
+			display: table;
+			width: 100%;
+		}
+
+		.son {
+			width: 120px;
+			display: table-cell;
+			vertical-align: middle;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="parent">
+		<p class="son">会议认为，党的十八大以来，我国经济发展取得历史性成就、
+		</p>
+	</div>
+	<script type="text/javascript">
+		class Cat {
+			sayThis() {
+				console.log(this);//这个this是什么
+			}
+			// sayThiss = ()=>{
+			// 	console.log(this);//这个this是什么
+
+			// }
+			sayThiss = this.sayThis.bind(this)
+
+			exec(cb) {
+				// cb();
+				this.sayThis()
+			}
+
+			render() {
+				this.exec(this.sayThiss);
+			}
+		}
+		const cat = new Cat();
+		cat.render();
+		// cat.sayThis()
+
+
+		function cc() {
+			console.log(this);
+		}
+		cc()//window
+
+//
+		class CC {
+			con() {
+				console.log(this);
+			}
+		}
+		var ccc = new CC();
+		ccc.con()
+
+
+
+
+
+
+
+		//
+		class A {
+			constructor() {
+				this.aa = 1;
+			}
+			hello() {
+				console.log(this.aa);
+			}
+
+			hello2() {
+				(function () {
+					console.log(this.aa);
+				})();
+			}
+
+		}
+
+		const a = new A();
+		a.hello(); // 1
+		a.hello2(); // Uncaught TypeError: Cannot read property 'aa' of undefined
+	</script>
+</body>
+
+</html>
