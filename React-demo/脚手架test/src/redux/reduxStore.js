@@ -1,6 +1,5 @@
 import { createStore } from 'redux';
 
-
 //reducer是一个函数，  使用的时候把它传入store 的createStore
 //他其实就是初始化了state，和规定什么样的action去如何控制state里的值
 const reducer = (state,action)=>{

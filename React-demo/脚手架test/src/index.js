@@ -7,7 +7,9 @@ import * as serviceWorker from "./serviceWorker";
 import { HashRouter, BrowserRouter } from "react-router-dom"; //对应hash history路由模式
 
 import {Provider}  from "react-redux"; //react-redux
-import store from "./redux/reduxStore"; //redux
+// import store from "./redux/reduxStore";  //redux
+import store from "./reducer/index";        //拆分合并之后的redux
+
 
 //  <React.StrictMode>严格模式
 ReactDOM.render(

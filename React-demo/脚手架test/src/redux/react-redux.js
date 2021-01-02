@@ -7,6 +7,7 @@
 const mapStateToProps = (store) => {
   return {
     num: store.num,
+    other:store.other
   };
 };
 
