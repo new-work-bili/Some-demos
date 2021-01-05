@@ -5,6 +5,7 @@ import "../assets/style/Home.scss";
 import { testContext } from "../components/Context/context";
 import ReduxTest from "./reduxTest";
 import ReactReduxTest from "./react-reduxTest";
+import RefTest from '../components/Ref/ref'
 
 import { Provider, connect } from "react-redux"; //react-redux
 import store from "../redux/reduxStore"; //redux
@@ -97,6 +98,7 @@ export default class home extends PureComponent {
                 <hr></hr>
                 <ReactReduxTest></ReactReduxTest>
                 <hr></hr>
+                <RefTest></RefTest>
             </div>
         );
     }

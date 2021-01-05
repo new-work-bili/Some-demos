@@ -13,6 +13,7 @@ class DeepChild extends PureComponent {
 }
 // DeepChild.contextType = testContext;//或者这样
 
+
 export default class child extends PureComponent {
     constructor(props) {
         super(props); //继承，比如父子通讯时的props
@@ -20,12 +21,16 @@ export default class child extends PureComponent {
             //data
             data: "状态遍历仓库state",
         };
+
     }
     send = () => {
         this.props.sendFunc("sendMasg");
     };
+    componentDidMount(){
+    }
     render() {
         const hello = "hello word";
+
         return (
             <div>
                 <h1 className="child">
@@ -42,7 +47,9 @@ export default class child extends PureComponent {
                 <testContext.Consumer>
                     {(value) => <p>这个是Consumer的测试：{value}</p>}
                 </testContext.Consumer>
+                <br/><br/>
             </div>
+
         );
     }
 }
