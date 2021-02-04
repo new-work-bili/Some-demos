@@ -13,6 +13,7 @@ import CookieStudent from './pages/cookie-test/Student'
 import CookieTeach from './pages/cookie-test/Teach'
 import Memo from './pages/Memo'
 import Context from './pages/Context'
+import './http/mock/mock.js'
 
 
 function App(props) {

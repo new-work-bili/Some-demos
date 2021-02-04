@@ -9,7 +9,7 @@ import { HashRouter, BrowserRouter } from "react-router-dom"; //对应hash histo
 import {Provider}  from "react-redux"; //react-redux
 // import store from "./redux/reduxStore";  //redux
 import store from "./reducer/index";        //拆分合并之后的redux
-
+import './http/mock/mock.js'
 
 //  <React.StrictMode>严格模式
 ReactDOM.render(

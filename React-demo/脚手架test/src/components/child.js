@@ -6,28 +6,71 @@ class DeepChild extends PureComponent {
         super(props);
         this.state = {};
     }
+    static fun() {
+        console.log("static中的this,获取实例属性：", this.classThisTest); //undefined；获取不到实例上的属性
+        console.log("static中的this,获取静态方法：", this.funs); //funs(){...};获取到的是static的静态属性
+    }
+    static funs() {
+        console.log(this.classThisTest);
+    }
     static contextType = testContext; //向上找到最近的Provider中的value;注意：contexType是固定的
     render() {
-        return <h3>这是deepChild组件获取的Context: {this.context} </h3>; //使用
+        return (
+            <h3>
+                这是deepChild组件获取的Context: {this.context}
+                <button
+                    onClick={() => {
+                        this.classThisTest = "thisIS";
+                        console.log(
+                            "普通函数中的this,实例的this,获取实例属性：",
+                            this.classThisTest
+                        ); //funs(){...};
+                        console.log(
+                            "普通函数中的this,实例的this,获取静态方法：",
+                            this.funs
+                        ); //undefined
+                        DeepChild.fun();
+                    }}
+                >
+                    点击测试class的this
+                </button>
+            </h3>
+        ); //使用
     }
 }
 // DeepChild.contextType = testContext;//或者这样
-
 
 export default class child extends PureComponent {
     constructor(props) {
         super(props); //继承，比如父子通讯时的props
         this.state = {
-            //data
             data: "状态遍历仓库state",
         };
-
     }
+
     send = () => {
         this.props.sendFunc("sendMasg");
     };
-    componentDidMount(){
-    }
+    fetchSend = () => {
+        const url = "http://localhost:3001/login/";
+        const data = { data: "测试JSON数据" };
+        fetch(url, {
+            method: "POST",
+            headers: {
+                // "Content-type": "application/json;charset=UTF-8",
+            },
+            body: JSON.stringify(data),
+        })
+            .then((res) => {
+                const data = res.json();
+                console.log(data, res);
+                return data;
+            })
+            .then((res) => {
+                console.log(res);
+            });
+    };
+    componentDidMount() {}
     render() {
         const hello = "hello word";
 
@@ -47,9 +90,10 @@ export default class child extends PureComponent {
                 <testContext.Consumer>
                     {(value) => <p>这个是Consumer的测试：{value}</p>}
                 </testContext.Consumer>
-                <br/><br/>
+                <p style={{ backgroundColor: "green" }}>
+                    <button onClick={this.fetchSend}>点击发送fetch</button>
+                </p>
             </div>
-
         );
     }
 }

@@ -11,6 +11,7 @@ const mapStateToProps = (store) => {
   };
 };
 
+
 /* 
 相当于对dispatch的调用映射，就是post;它定义了哪些用户的操作(key)应该当作store中的 Action.type，进而调用
 既可以是韩式也可以是对象
